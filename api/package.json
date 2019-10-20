@@ -1,0 +1,22 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node server.ts",
+    "dev2": "ts-node server.ts 3031"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@feathersjs/express": "^4.3.7",
+    "@feathersjs/feathers": "^4.3.7",
+    "@feathersjs/socketio": "^4.3.7",
+    "feathers-sync": "^1.1.2"
+  },
+  "devDependencies": {
+    "ts-node": "^8.4.1"
+  }
+}
