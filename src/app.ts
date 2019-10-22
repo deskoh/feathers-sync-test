@@ -17,7 +17,8 @@ function initClient(host: string) {
 
   // Use the messages service from the server
   messageService.create({
-    text: `Message from client ${host}`
+    text: `Message from client ${host}`,
+    date: new Date(),
   })
 }
 

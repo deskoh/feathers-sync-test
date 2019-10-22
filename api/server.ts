@@ -10,6 +10,7 @@ const port = parseInt(process.argv[2]) || 3030;
 interface Message {
   id: number
   text: string
+  date: Date
 }
 
 class MessageService {
@@ -20,10 +21,13 @@ class MessageService {
     return this.messages
   }
 
-  async create (data: Pick<Message, 'text'>) {
+
+
+  async create (data: Pick<Message, 'text' | 'date'>) {
     const message: Message = {
       id: this.messages.length,
-      text: data.text
+      text: data.text,
+      date: data.date,
     }
     console.log(`Creating message ${message.id} on ${port}`)
     this.messages.push(message)
@@ -35,7 +39,8 @@ const app = express(feathers())
 
 // Configure Redis
 app.configure(sync({
-  uri: 'redis://localhost:6379'
+  // uri: 'redis://localhost:6379'
+  uri: 'amqp://guest:guest@localhost:5672',
 }))
 
 app.use(express.json())
@@ -49,6 +54,11 @@ app.on('connection', connection =>
   app.channel('everybody').join(connection)
 )
 app.publish(data => app.channel('everybody'))
+
+
+app.service('messages').on('created', (data: Message) => {
+  console.log(`Server ${port}: ${data.text}`)
+})
 
 // Start the server
 app.listen(port).on('listening', () =>
